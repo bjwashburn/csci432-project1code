@@ -2,12 +2,10 @@
   <div class="private-messages">
     <h2>Private Messages with {{ userName }}</h2>
 
-    <!-- Display Message Count -->
     <div v-if="messageCount !== null" class="message-count">
       Total Messages: {{ messageCount }}
     </div>
 
-    <!-- Display Messages -->
     <div class="messages-container">
       <div v-for="message in messages" :key="message._id" class="message">
         <p><strong>{{ message.senderName }}</strong>: {{ message.text }}</p>
@@ -15,7 +13,6 @@
       </div>
     </div>
 
-    <!-- Send Message Form -->
     <form @submit.prevent="sendMessage" class="message-form">
       <input
         v-model="newMessage"
@@ -33,14 +30,13 @@ import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
-const userId = route.params.userId; // Get userId from the route
-const userName = route.query.name; // Get userName from the query string
+const userId = route.params.userId;
+const userName = route.query.name;
 
 const messages = ref([]);
 const newMessage = ref('');
 const messageCount = ref(null);
 
-// Fetch private messages
 async function fetchMessages() {
   const token = localStorage.getItem('token');
   const url = `https://hap-app-api.azurewebsites.net/messages/${userId}`;
@@ -65,7 +61,6 @@ async function fetchMessages() {
   }
 }
 
-// Fetch private message count
 async function fetchMessageCount() {
   const token = localStorage.getItem('token');
   const url = `https://hap-app-api.azurewebsites.net/messages/${userId}/count`;
@@ -90,7 +85,6 @@ async function fetchMessageCount() {
   }
 }
 
-// Send a private message
 async function sendMessage() {
   if (!newMessage.value.trim()) {
     alert('Please enter a message.');
@@ -112,8 +106,8 @@ async function sendMessage() {
 
     if (response.ok) {
       newMessage.value = '';
-      fetchMessages(); // Refresh messages after sending
-      fetchMessageCount(); // Refresh message count after sending
+      fetchMessages();
+      fetchMessageCount();
     } else if (response.status === 401) {
       alert('Unauthorized: Please log in again.');
     } else {
@@ -124,13 +118,11 @@ async function sendMessage() {
   }
 }
 
-// Format date for display
 function formatDate(dateString) {
   const date = new Date(dateString);
   return date.toLocaleString();
 }
 
-// Fetch messages and message count when the component is mounted
 onMounted(() => {
   fetchMessages();
   fetchMessageCount();

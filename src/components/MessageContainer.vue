@@ -21,11 +21,11 @@ const lastMessageDate = ref(new Date().toISOString());
 
 async function fetchMessages(before = new Date().toISOString()) {
   loading.value = true;
-  const token = localStorage.getItem('token'); // Get the token from localStorage
+  const token = localStorage.getItem('token');
   const url = `https://hap-app-api.azurewebsites.net/messages?limit=10&before=${before}`;
   const response = await fetch(url, {
     headers: {
-      'Authorization': `Bearer ${token}` // Include the Bearer token
+      'Authorization': `Bearer ${token}`
     }
   });
   if (response.ok) {
@@ -44,11 +44,11 @@ async function fetchMessages(before = new Date().toISOString()) {
 }
 
 async function fetchNewMessages() {
-  const token = localStorage.getItem('token'); // Get the token from localStorage
+  const token = localStorage.getItem('token');
   const url = `https://hap-app-api.azurewebsites.net/messages/count?after=${lastMessageDate.value}`;
   const response = await fetch(url, {
     headers: {
-      'Authorization': `Bearer ${token}` // Include the Bearer token
+      'Authorization': `Bearer ${token}`
     }
   });
   if (response.ok) {

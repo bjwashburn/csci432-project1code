@@ -19,7 +19,7 @@ const props = defineProps({
 
 function formatDate(dateString) {
   const date = new Date(dateString);
-  return date.toLocaleString(); // Adjust the format as needed
+  return date.toLocaleString(); 
 }
 </script>
 

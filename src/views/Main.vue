@@ -244,7 +244,6 @@ function closeDropdown(event) {
   }
 }
 
-// Add event listener to close dropdown on outside click
 onMounted(() => {
   document.addEventListener('click', closeDropdown);
 });
