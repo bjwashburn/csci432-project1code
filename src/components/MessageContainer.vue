@@ -35,7 +35,7 @@ async function fetchMessages(before = new Date().toISOString()) {
       lastMessageDate.value = data[data.length - 1].updatedAt;
     }
   } else if (response.status === 401) {
-    console.error('Unauthorized: Invalid or missing token');
+    console.error('Invalid or missing token');
     alert('You are not authorized. Please log in again.');
   } else {
     console.error('Failed to fetch messages:', response.status);
@@ -55,8 +55,8 @@ async function fetchNewMessages() {
     const count = await response.json();
     newMessagesCount.value = count;
   } else if (response.status === 401) {
-    console.error('Unauthorized: Invalid or missing token');
-    alert('You are not authorized. Please log in again.');
+    console.error('Invalid or missing token');
+    alert('Not authorized, Please log in again.');
   } else {
     console.error('Failed to fetch new messages count:', response.status);
   }

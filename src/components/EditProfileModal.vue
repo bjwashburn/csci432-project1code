@@ -43,6 +43,7 @@ const localUser = ref({ ...props.user });
 
 watch(() => props.user, (newUser) => {
   localUser.value = { ...newUser };
+
 }, { immediate: true });
 
 const closeModal = () => {

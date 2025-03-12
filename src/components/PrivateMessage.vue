@@ -17,7 +17,7 @@
       <input
         v-model="newMessage"
         type="text"
-        placeholder="Type a message..."
+        placeholder="Type a message"
         class="message-input"
       />
       <button type="submit" class="send-button">Send</button>
@@ -52,12 +52,12 @@ async function fetchMessages() {
       const data = await response.json();
       messages.value = data;
     } else if (response.status === 401) {
-      alert('Unauthorized: Please log in again.');
+      alert('Unauthorized please try to log in again.');
     } else {
-      console.error('Failed to fetch messages:', response.status);
+      console.error('Failed to fetch the messages:', response.status);
     }
   } catch (error) {
-    console.error('An error occurred while fetching messages:', error);
+    console.error('Error fetching messages:', error);
   }
 }
 
@@ -76,18 +76,18 @@ async function fetchMessageCount() {
       const data = await response.json();
       messageCount.value = data.total;
     } else if (response.status === 401) {
-      alert('Unauthorized: Please log in again.');
+      alert('Unauthorized please try to log in again.');
     } else {
-      console.error('Failed to fetch message count:', response.status);
+      console.error('Cannot fetch message count:', response.status);
     }
   } catch (error) {
-    console.error('An error occurred while fetching message count:', error);
+    console.error('Error fetching message count:', error);
   }
 }
 
 async function sendMessage() {
   if (!newMessage.value.trim()) {
-    alert('Please enter a message.');
+    alert('Enter a message.');
     return;
   }
 
@@ -109,12 +109,12 @@ async function sendMessage() {
       fetchMessages();
       fetchMessageCount();
     } else if (response.status === 401) {
-      alert('Unauthorized: Please log in again.');
+      alert('Unauthorized please log in again.');
     } else {
       console.error('Failed to send message:', response.status);
     }
   } catch (error) {
-    console.error('An error occurred while sending the message:', error);
+    console.error('Error sending the message:', error);
   }
 }
 

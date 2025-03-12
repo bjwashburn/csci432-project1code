@@ -46,24 +46,13 @@ const router = createRouter({
       path: '/join',
       name: 'join',
       component: Join,
-      meta: { authRequired: false }, 
+      meta: { authRequired: false },
     },
     {
       path: '/:pathMatch(.*)*',
       redirect: '/',
     },
   ],
-});
-
-
-router.beforeEach((to, from, next) => {
-  const isLoggedIn = !!localStorage.getItem('token');
-
-  if (to.meta.authRequired && !isLoggedIn) {
-    next({ name: 'home' });
-  } else {
-    next();
-  }
 });
 
 export default router;
