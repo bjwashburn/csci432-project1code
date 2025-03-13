@@ -5,8 +5,10 @@ import { useRouter } from 'vue-router'
 import { ref, computed, onMounted, onUnmounted} from 'vue'
 import MessageContainer from '../components/MessageContainer.vue';
 import EditProfileModal from '../components/EditProfileModal.vue';
+import { useUserStore } from '@/stores/userStore';
 
 const router = useRouter();
+const userStore = useUserStore();
 
 const showModal = ref(false);
 const showDropdown = ref(false);
@@ -17,7 +19,7 @@ const searchQuery = ref('');
 const allUsers = ref([]);
 
 const fetchAllUsers = async () => {
-  const token = localStorage.getItem('token');
+  const token = userStore.getToken;
   if (!token) {
     alert('You are not logged in. Please log in again.');
     router.push({ name: 'login' });
@@ -80,7 +82,7 @@ function closeEditModal() {
 }
 
 async function handleSaveChanges(updatedUser) {
-  const token = localStorage.getItem('token');
+  const token = userStore.getToken;
   const url = 'https://hap-app-api.azurewebsites.net/user';
 
   const data = {
@@ -104,12 +106,7 @@ async function handleSaveChanges(updatedUser) {
   if (response.ok) {
     const result = await response.json();
     console.log('Profile updated successfully:', result);
-
-    localStorage.setItem('userName', updatedUser.userName);
-    localStorage.setItem('firstName', updatedUser.firstName);
-    localStorage.setItem('lastName', updatedUser.lastName);
-    localStorage.setItem('email', updatedUser.email);
-
+    userStore.setProfile(updatedUser);
     closeEditModal();
   } else {
     console.error('Failed to update profile:', response.status);
@@ -126,7 +123,7 @@ async function sendMessage() {
   }
 
   const url = 'https://hap-app-api.azurewebsites.net/message';
-  const token = localStorage.getItem('token');
+  const token = userStore.getToken;
   console.log('before sending token', token);
 
   const data = { text: text.value };
@@ -145,7 +142,7 @@ async function sendMessage() {
   if (response.status === 201) {
     const data = await response.json();
     if (data.token) {
-      localStorage.setItem("token", data.token);
+      userStore.setToken(data.token);
     }
     console.log(data);
     console.log("Successfully sent message");
@@ -173,7 +170,7 @@ function closeModal() {
 }
 
 async function deleteAccount() {
-  const token = localStorage.getItem("token")
+  const token = userStore.getToken
 
   const url = 'https://hap-app-api.azurewebsites.net/user'
 
@@ -188,8 +185,7 @@ async function deleteAccount() {
 
   if (response.ok) {
     if (response.status === 200) {
-      localStorage.removeItem("token")
-      localStorage.removeItem("username")
+      userStore.clearUserData()
 
       console.log("Successfully deleted account")
 
@@ -206,7 +202,7 @@ async function deleteAccount() {
 }
 
 async function signOut() {
-  const token = localStorage.getItem("token");
+  const token = userStore.getToken
 
   const url = 'https://hap-app-api.azurewebsites.net/user/logout';
 
@@ -221,8 +217,7 @@ async function signOut() {
 
   if (response.ok) {
     if (response.status === 200) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("username");
+      userStore.clearUserData();
 
       console.log("Successfully signed out");
 

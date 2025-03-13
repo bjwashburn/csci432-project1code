@@ -3,6 +3,9 @@
 import Header from '../components/Header.vue'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
+import { useUserStore } from '../stores/userStore';
+
+const userStore = useUserStore();
 
 const router = useRouter()
 
@@ -60,13 +63,15 @@ async function createAccount (event) {
 	if (response.status === 201) {
 		const data = await response.json()
 
-		localStorage.setItem("token", data.token)
-		console.log(data)
-
-    localStorage.setItem("username", userName.value);
-    localStorage.setItem("email", email.value);
-    localStorage.setItem("firstName", firstName.value);
-    localStorage.setItem("lastName", lastName.value);
+		userStore.setUserData(
+      {
+        userName: userName.value,
+        email: email.value,
+        firstName: firstName.value,
+        lastName: lastName.value,
+      },
+      data.token
+    );
 
 
     console.log("Successfully signed up")

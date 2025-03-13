@@ -2,7 +2,9 @@
 import Header from '../components/Header.vue'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
+import { useUserStore } from '../stores/userStore';
 
+const userStore = useUserStore();
 const router = useRouter()
 
 const email = ref('')
@@ -39,7 +41,7 @@ async function signIn(event){
 	if (response.status === 200) {
 		const data = await response.json()
 
-		localStorage.setItem("token", data.token)
+		userStore.setToken(data.token);
 		console.log(data)
     console.log("Successfully signed in")
 

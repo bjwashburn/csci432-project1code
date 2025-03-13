@@ -11,16 +11,23 @@
 </template>
 
 <script>
+import { useUserStore } from '../stores/userStore';
+
 export default {
-  data() {
+  setup() {
+    const userStore = useUserStore();
+
+    const firstName = userStore.getProfile?.firstName || '';
+    const lastName = userStore.getProfile?.lastName || '';
+    const email = userStore.getProfile?.email || '';
+
     return {
-      userName: localStorage.getItem('userName'),
-      firstName: localStorage.getItem('firstName'),
-      lastName: localStorage.getItem('lastName'),
-      email: localStorage.getItem('email')
-    }
-  }
-}
+      firstName,
+      lastName,
+      email,
+    };
+  },
+};
 </script>
 
 <style>

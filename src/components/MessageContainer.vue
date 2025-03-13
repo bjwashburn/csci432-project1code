@@ -13,6 +13,9 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import Message from './Message.vue';
+import { useUserStore } from '../stores/userStore';
+
+const userStore = useUserStore();
 
 const messages = ref([]);
 const loading = ref(false);
@@ -21,7 +24,7 @@ const lastMessageDate = ref(new Date().toISOString());
 
 async function fetchMessages(before = new Date().toISOString()) {
   loading.value = true;
-  const token = localStorage.getItem('token');
+  const token = userStore.getToken;
   const url = `https://hap-app-api.azurewebsites.net/messages?limit=10&before=${before}`;
   const response = await fetch(url, {
     headers: {
@@ -44,7 +47,7 @@ async function fetchMessages(before = new Date().toISOString()) {
 }
 
 async function fetchNewMessages() {
-  const token = localStorage.getItem('token');
+  const token = userStore.getToken;
   const url = `https://hap-app-api.azurewebsites.net/messages/count?after=${lastMessageDate.value}`;
   const response = await fetch(url, {
     headers: {

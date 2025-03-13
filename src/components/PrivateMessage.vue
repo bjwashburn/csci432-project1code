@@ -28,6 +28,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
+import { useUserStore } from '../stores/userStore';
 
 const route = useRoute();
 const userId = route.params.userId;
@@ -37,8 +38,10 @@ const messages = ref([]);
 const newMessage = ref('');
 const messageCount = ref(null);
 
+const userStore = useUserStore();
+
 async function fetchMessages() {
-  const token = localStorage.getItem('token');
+  const token = userStore.getToken;
   const url = `https://hap-app-api.azurewebsites.net/messages/${userId}`;
 
   try {
@@ -62,7 +65,7 @@ async function fetchMessages() {
 }
 
 async function fetchMessageCount() {
-  const token = localStorage.getItem('token');
+  const token = userStore.getToken;
   const url = `https://hap-app-api.azurewebsites.net/messages/${userId}/count`;
 
   try {
@@ -91,7 +94,7 @@ async function sendMessage() {
     return;
   }
 
-  const token = localStorage.getItem('token');
+  const token = userStore.getToken;
   const url = `https://hap-app-api.azurewebsites.net/message/${userId}`;
 
   try {
